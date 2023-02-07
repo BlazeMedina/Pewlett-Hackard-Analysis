@@ -1,176 +1,187 @@
 -- Retirement eligibilty
-SELECT first_name, last_name
-FROM employees
-WHERE birth_date BETWEEN '1952-01-01' AND '1955-12-31';
 
-SELECT COUNT(first_name)
-FROM employees
-WHERE birth_date BETWEEN '1952-01-01' AND '1955-12-31';
+SELECT FIRST_NAME,
+	LAST_NAME
+FROM EMPLOYEES
+WHERE BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31';
 
-SELECT COUNT(first_name)
-FROM employees
-WHERE birth_date BETWEEN '1952-01-01' AND '1952-12-31';
 
-SELECT COUNT(first_name)
-FROM employees
-WHERE birth_date BETWEEN '1953-01-01' AND '1953-12-31';
+SELECT COUNT(FIRST_NAME)
+FROM EMPLOYEES
+WHERE BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31';
 
-SELECT COUNT(first_name)
-FROM employees
-WHERE birth_date BETWEEN '1954-01-01' AND '1954-12-31';
 
-SELECT COUNT(first_name)
-FROM employees
-WHERE birth_date BETWEEN '1955-01-01' AND '1955-12-31';
+SELECT COUNT(FIRST_NAME)
+FROM EMPLOYEES
+WHERE BIRTH_DATE BETWEEN '1952-01-01' AND '1952-12-31';
+
+
+SELECT COUNT(FIRST_NAME)
+FROM EMPLOYEES
+WHERE BIRTH_DATE BETWEEN '1953-01-01' AND '1953-12-31';
+
+
+SELECT COUNT(FIRST_NAME)
+FROM EMPLOYEES
+WHERE BIRTH_DATE BETWEEN '1954-01-01' AND '1954-12-31';
+
+
+SELECT COUNT(FIRST_NAME)
+FROM EMPLOYEES
+WHERE BIRTH_DATE BETWEEN '1955-01-01' AND '1955-12-31';
 
 -- Retirement eligibilty with hire date between 1985 and 1988
-SELECT first_name, last_name
-FROM employees
-WHERE (birth_date BETWEEN '1952-01-01' AND '1955-12-31')
-AND (hire_date BETWEEN '1985-01-01' AND '1988-12-31');
+
+SELECT FIRST_NAME,
+	LAST_NAME
+FROM EMPLOYEES
+WHERE (BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31')
+	AND (HIRE_DATE BETWEEN '1985-01-01' AND '1988-12-31');
 
 -- Retirement eligibilty count
-SELECT COUNT(first_name)
-FROM employees
-WHERE (birth_date BETWEEN '1952-01-01' AND '1955-12-31')
-AND (hire_date BETWEEN '1985-01-01' AND '1988-12-31');
 
--- Create a Table for Retirement eligibilty 
-SELECT emp_no, first_name, last_name
-INTO retirement_info
-FROM employees
-WHERE (birth_date BETWEEN '1952-01-01' AND '1955-12-31')
-AND (hire_date BETWEEN '1985-01-01' AND '1988-12-31');
+SELECT COUNT(FIRST_NAME)
+FROM EMPLOYEES
+WHERE (BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31')
+	AND (HIRE_DATE BETWEEN '1985-01-01' AND '1988-12-31');
+
+-- Create a Table for Retirement eligibilty
+
+SELECT EMP_NO,
+	FIRST_NAME,
+	LAST_NAME INTO RETIREMENT_INFO
+FROM EMPLOYEES
+WHERE (BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31')
+	AND (HIRE_DATE BETWEEN '1985-01-01' AND '1988-12-31');
 
 -- Delete a table
-DROP TABLE retirement_info;
+
+DROP TABLE RETIREMENT_INFO;
 
 -- Check the table
-SELECT * FROM retirement_info;
+
+SELECT *
+FROM RETIREMENT_INFO;
 
 -- Joining departments and dept_manager tables
-SELECT d.dept_name,
-     dm.emp_no,
-     dm.from_date,
-     dm.to_date
-FROM departments as d
-INNER JOIN dept_manager as dm
-ON d.dept_no = dm.dept_no;
+
+SELECT D.DEPT_NAME,
+	DM.EMP_NO,
+	DM.FROM_DATE,
+	DM.TO_DATE
+FROM DEPARTMENTS AS D
+INNER JOIN DEPT_MANAGER AS DM ON D.DEPT_NO = DM.DEPT_NO;
 
 -- Joining retirement_info and dept_emp tables
-SELECT ri.emp_no,
-    ri.first_name,
-	ri.last_name,
-    de.to_date
-FROM retirement_info as ri
-LEFT JOIN dept_emp as de
-ON ri.emp_no = de.emp_no;
 
-SELECT ri.emp_no,
-	ri.first_name,
-	ri.last_name,
-	de.to_date
-INTO current_emp
-FROM retirement_info as ri
-LEFT JOIN dept_emp as de
-ON ri.emp_no = de.emp_no
-WHERE de.to_date = ('9999-01-01');
+SELECT RI.EMP_NO,
+	RI.FIRST_NAME,
+	RI.LAST_NAME,
+	DE.TO_DATE
+FROM RETIREMENT_INFO AS RI
+LEFT JOIN DEPT_EMP AS DE ON RI.EMP_NO = DE.EMP_NO;
 
-select * FROM current_emp;
+
+SELECT RI.EMP_NO,
+	RI.FIRST_NAME,
+	RI.LAST_NAME,
+	DE.TO_DATE INTO CURRENT_EMP
+FROM RETIREMENT_INFO AS RI
+LEFT JOIN DEPT_EMP AS DE ON RI.EMP_NO = DE.EMP_NO
+WHERE DE.TO_DATE = ('9999-01-01');
+
+
+SELECT *
+FROM CURRENT_EMP;
 
 -- Employee count by department number
-SELECT COUNT(ce.emp_no), de.dept_no
-INTO retiring_emp
-FROM current_emp as ce
-LEFT JOIN dept_emp as de
-ON ce.emp_no = de.emp_no
-GROUP BY de.dept_no
-ORDER BY de.dept_no;
 
-SELECT * FROM salaries
-ORDER BY to_date DESC;
+SELECT COUNT(CE.EMP_NO),
+	DE.DEPT_NO INTO RETIRING_EMP
+FROM CURRENT_EMP AS CE
+LEFT JOIN DEPT_EMP AS DE ON CE.EMP_NO = DE.EMP_NO
+GROUP BY DE.DEPT_NO
+ORDER BY DE.DEPT_NO;
+
+
+SELECT *
+FROM SALARIES
+ORDER BY TO_DATE DESC;
 
 -- Create emp_info table
-SELECT e.emp_no, 
-	e.first_name, 
-	e.last_name,
-	e.gender,
-	s.salary,
-	de.to_date
-INTO emp_info
-FROM employees as e
-INNER JOIN salaries as s
-ON (e.emp_no = s.emp_no)
-INNER JOIN dept_emp as de
-ON (e.emp_no = de.emp_no)
-WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31')
-AND (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31')
-AND (de.to_date = '9999-01-01');
+
+SELECT E.EMP_NO,
+	E.FIRST_NAME,
+	E.LAST_NAME,
+	E.GENDER,
+	S.SALARY,
+	DE.TO_DATE INTO EMP_INFO
+FROM EMPLOYEES AS E
+INNER JOIN SALARIES AS S ON (E.EMP_NO = S.EMP_NO)
+INNER JOIN DEPT_EMP AS DE ON (E.EMP_NO = DE.EMP_NO)
+WHERE (E.BIRTH_DATE BETWEEN '1952-01-01' AND '1955-12-31')
+	AND (E.HIRE_DATE BETWEEN '1985-01-01' AND '1988-12-31')
+	AND (DE.TO_DATE = '9999-01-01');
 
 -- List of managers per department
-SELECT  dm.dept_no,
-        d.dept_name,
-        dm.emp_no,
-        ce.last_name,
-        ce.first_name,
-        dm.from_date,
-        dm.to_date
-INTO manager_info
-FROM dept_manager AS dm
-    INNER JOIN departments AS d
-        ON (dm.dept_no = d.dept_no)
-    INNER JOIN current_emp AS ce
-        ON (dm.emp_no = ce.emp_no);
+
+SELECT DM.DEPT_NO,
+	D.DEPT_NAME,
+	DM.EMP_NO,
+	CE.LAST_NAME,
+	CE.FIRST_NAME,
+	DM.FROM_DATE,
+	DM.TO_DATE INTO MANAGER_INFO
+FROM DEPT_MANAGER AS DM
+INNER JOIN DEPARTMENTS AS D ON (DM.DEPT_NO = D.DEPT_NO)
+INNER JOIN CURRENT_EMP AS CE ON (DM.EMP_NO = CE.EMP_NO);
 
 --
 -- Department retirees
-SELECT ce.emp_no,
-	   ce.first_name,
-	   ce.last_name,
-	   d.dept_name
-INTO dept_info
-FROM current_emp AS ce
-	INNER JOIN dept_emp AS de
-		ON (ce.emp_no = de.emp_no)
-	Inner JOIN departments AS d
-		ON (de.dept_no = d.dept_no);
+
+SELECT CE.EMP_NO,
+	CE.FIRST_NAME,
+	CE.LAST_NAME,
+	D.DEPT_NAME INTO DEPT_INFO
+FROM CURRENT_EMP AS CE
+INNER JOIN DEPT_EMP AS DE ON (CE.EMP_NO = DE.EMP_NO)
+INNER JOIN DEPARTMENTS AS D ON (DE.DEPT_NO = D.DEPT_NO);
 
 --
 -- List of retiring in sales
-SELECT  de.dept_no,
-        d.dept_name,
-        de.emp_no,
-        ce.last_name,
-        ce.first_name,
-        de.from_date,
-        de.to_date
-INTO sales_info
-FROM dept_emp AS de
-    INNER JOIN departments AS d
-        ON (de.dept_no = d.dept_no)
-    INNER JOIN current_emp AS ce
-        ON (de.emp_no = ce.emp_no)
-	WHERE (d.dept_name = 'Sales')
-	AND (de.to_date = '9999-01-01');
+
+SELECT DE.DEPT_NO,
+	D.DEPT_NAME,
+	DE.EMP_NO,
+	CE.LAST_NAME,
+	CE.FIRST_NAME,
+	DE.FROM_DATE,
+	DE.TO_DATE INTO SALES_INFO
+FROM DEPT_EMP AS DE
+INNER JOIN DEPARTMENTS AS D ON (DE.DEPT_NO = D.DEPT_NO)
+INNER JOIN CURRENT_EMP AS CE ON (DE.EMP_NO = CE.EMP_NO)
+WHERE (D.DEPT_NAME = 'Sales')
+	AND (DE.TO_DATE = '9999-01-01');
 
 --
 -- List of retiring in Sales and Development
-SELECT  de.dept_no,
-        d.dept_name,
-        de.emp_no,
-        ce.last_name,
-        ce.first_name,
-        de.from_date,
-        de.to_date
-INTO sales_development_info
-FROM dept_emp AS de
-    INNER JOIN departments AS d
-        ON (de.dept_no = d.dept_no)
-    INNER JOIN current_emp AS ce
-        ON (de.emp_no = ce.emp_no)
-	WHERE (de.to_date = '9999-01-01')
-	AND d.dept_name IN ('Sales', 'Development');
 
-DROP TABLE sales_development_info CASCADE;
+SELECT DE.DEPT_NO,
+	D.DEPT_NAME,
+	DE.EMP_NO,
+	CE.LAST_NAME,
+	CE.FIRST_NAME,
+	DE.FROM_DATE,
+	DE.TO_DATE INTO SALES_DEVELOPMENT_INFO
+FROM DEPT_EMP AS DE
+INNER JOIN DEPARTMENTS AS D ON (DE.DEPT_NO = D.DEPT_NO)
+INNER JOIN CURRENT_EMP AS CE ON (DE.EMP_NO = CE.EMP_NO)
+WHERE (DE.TO_DATE = '9999-01-01')
+	AND D.DEPT_NAME IN ('Sales','Development');
 
-SELECT * FROM sales_development_info;
+
+DROP TABLE SALES_DEVELOPMENT_INFO CASCADE;
+
+
+SELECT *
+FROM SALES_DEVELOPMENT_INFO;
