@@ -48,3 +48,41 @@ INNER JOIN titles as t
 WHERE (de.to_date = '9999-01-01')
 	AND (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 ORDER BY e.emp_no;
+
+-- Retirement eligible by department 
+SELECT COUNT(*) as retiring,
+	d.dept_name
+INTO dept_retiring
+FROM employees AS e
+INNER JOIN dept_emp AS de
+	ON (e.emp_no = de.emp_no)
+INNER JOIN departments AS d
+	ON (de.dept_no = d.dept_no)
+WHERE (de.to_date = '9999-01-01')
+	AND (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31')
+GROUP BY d.dept_name
+ORDER BY COUNT(*) DESC;
+
+-- Mentorship program eligible by department 
+SELECT COUNT(*) as mentorship_eligible,
+	d.dept_name
+INTO dept_mentoring
+FROM employees AS e
+INNER JOIN dept_emp AS de
+	ON (e.emp_no = de.emp_no)
+INNER JOIN departments AS d
+	ON (de.dept_no = d.dept_no)
+WHERE (de.to_date = '9999-01-01')
+	AND (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
+GROUP BY d.dept_name
+ORDER BY COUNT(*) DESC;
+
+-- Retiring vs Mentorship program eligible by department 
+SELECT dm.dept_name,
+	dr.retiring,
+	dm.mentorship_eligible
+INTO dept_mentoring_vs_retiring
+FROM dept_mentoring AS dm
+INNER JOIN dept_retiring AS dr
+	ON (dm.dept_name = dr.dept_name)
+ORDER BY dept_name;
