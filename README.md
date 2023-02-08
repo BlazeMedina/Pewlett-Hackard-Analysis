@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1e10161a73680181340bc580dd5c6bdb9da1acf4
 # Pewlett Hackard Challenge
 
 ## Overview of the analysis
